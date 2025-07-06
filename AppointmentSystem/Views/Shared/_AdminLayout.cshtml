@@ -1,0 +1,230 @@
+@{
+    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Panel</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #858796;
+            --success-color: #1cc88a;
+            --info-color: #36b9cc;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-color: #f8f9fc;
+            --dark-color: #5a5c69;
+        }
+
+        body {
+            background-color: #f8f9fc;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary-color) 0%, #224abe 100%);
+            min-height: 100vh;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar .nav-link.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 0.5rem;
+            width: 1.5rem;
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #2e59d9;
+            border-color: #2e59d9;
+        }
+
+        .btn-logout {
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .btn-logout:hover {
+            background-color: var(--danger-color);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-white" style="width: 250px;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <i class="fas fa-calendar-check me-2"></i>
+                <span class="fs-4">Admin Panel</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a asp-controller="Admin" asp-action="Dashboard" class="nav-link @(currentAction == "Dashboard" ? "active" : "")">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Admin" asp-action="Appointments" class="nav-link @(currentAction == "Appointments" ? "active" : "")">
+                        <i class="fas fa-calendar-check"></i>
+                        Randevular
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Admin" asp-action="Employees" class="nav-link @(currentAction == "Employees" ? "active" : "")">
+                        <i class="fas fa-users"></i>
+                        Çalışanlar
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Admin" asp-action="Clients" class="nav-link @(currentAction == "Clients" ? "active" : "")">
+                        <i class="fas fa-user-friends"></i>
+                        Müşteriler
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Admin" asp-action="Services" class="nav-link @(currentAction == "Services" ? "active" : "")">
+                        <i class="fas fa-concierge-bell"></i>
+                        Hizmetler
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user-circle me-2"></i>
+                    <strong>Admin</strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profil</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <button type="submit" class="dropdown-item">Çıkış Yap</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-grow-1">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white">
+                <div class="container-fluid">
+                    <a class="btn btn-primary me-3" href="/">Ana Sayfa</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-bell"></i>
+                                    <span class="badge bg-danger rounded-pill">@((ViewBag.Notifications as List<string>)?.Count ?? 0)</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="min-width: 300px;">
+                                    @if (ViewBag.Notifications != null && ((List<string>)ViewBag.Notifications).Count > 0)
+                                    {
+                                        foreach (var notification in (List<string>)ViewBag.Notifications)
+                                        {
+                                            <li><span class="dropdown-item">@notification</span></li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li><span class="dropdown-item text-muted">Bildirim yok</span></li>
+                                    }
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle position-relative" href="#" id="messageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-envelope"></i>
+                                    <span class="badge bg-danger rounded-pill">@((ViewBag.Messages as List<string>)?.Count ?? 0)</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="messageDropdown" style="min-width: 300px;">
+                                    @if (ViewBag.Messages != null && ((List<string>)ViewBag.Messages).Count > 0)
+                                    {
+                                        foreach (var message in (List<string>)ViewBag.Messages)
+                                        {
+                                            <li><span class="dropdown-item">@message</span></li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li><span class="dropdown-item text-muted">Mesaj yok</span></li>
+                                    }
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-sign-out-alt"></i> Çıkış
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid p-4">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html> 

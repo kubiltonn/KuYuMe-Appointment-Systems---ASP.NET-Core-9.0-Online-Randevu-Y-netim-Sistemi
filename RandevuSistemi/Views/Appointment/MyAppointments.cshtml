@@ -1,0 +1,70 @@
+@model IEnumerable<RandevuSistemi.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Randevularım";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Yeni Randevu
+        </a>
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Randevu Türü</th>
+                    <th>Hizmet</th>
+                    <th>Çalışan</th>
+                    <th>Tarih</th>
+                    <th>Saat</th>
+                    <th>Durum</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.AppointmentType?.Name</td>
+                        <td>
+                            @item.ServiceType?.Name
+                            @if (item.SubServiceType != null)
+                            {
+                                <br />
+                                <small class="text-muted">@item.SubServiceType.Name</small>
+                            }
+                        </td>
+                        <td>@item.Employee?.Name</td>
+                        <td>@item.AppointmentDate.ToShortDateString()</td>
+                        <td>@item.AppointmentTime.ToString(@"hh\:mm")</td>
+                        <td>
+                            <span class="badge @(item.Status == "Onaylandı" ? "bg-success" : 
+                                              item.Status == "Beklemede" ? "bg-warning" : 
+                                              item.Status == "İptal Edildi" ? "bg-danger" : "bg-secondary")">
+                                @item.Status
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                    <i class="fas fa-info-circle"></i> Detayları Görüntüle
+                                </a>
+                                @if (item.Status == "Beklemede")
+                                {
+                                    <a asp-action="Cancel" asp-route-id="@item.Id" class="btn btn-danger btn-sm" 
+                                       onclick="return confirm('Randevuyu iptal etmek istediğinizden emin misiniz?');">
+                                        <i class="fas fa-times"></i> İptal Et
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div> 

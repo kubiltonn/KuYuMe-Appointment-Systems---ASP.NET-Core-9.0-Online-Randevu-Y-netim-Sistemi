@@ -1,0 +1,88 @@
+@model IEnumerable<AppointmentSystem.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Randevularım";
+}
+
+<div class="container mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Randevularım</h2>
+        @if (!User.IsInRole("Admin"))
+        {
+            <div>
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Yeni Randevu
+                </a>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Henüz randevunuz bulunmamaktadır.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.AppointmentDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.ServiceType)</th>
+                        <th>@Html.DisplayNameFor(model => model.EmployeeName)</th>
+                        <th>@Html.DisplayNameFor(model => model.Status)</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@item.ServiceType</td>
+                            <td>@item.EmployeeName</td>
+                            <td>
+                                <span class="badge bg-@(item.Status switch {
+                                    AppointmentStatus.Pending => "warning",
+                                    AppointmentStatus.Confirmed => "success",
+                                    AppointmentStatus.Cancelled => "danger",
+                                    AppointmentStatus.Completed => "info",
+                                    AppointmentStatus.Rejected => "secondary",
+                                    _ => "secondary"
+                                })">
+                                    @item.Status
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    @if (item.Status == AppointmentStatus.Pending)
+                                    {
+                                        <form asp-action="Cancel" method="post" style="display: inline;">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Randevuyu iptal etmek istediğinizden emin misiniz?')">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div> 

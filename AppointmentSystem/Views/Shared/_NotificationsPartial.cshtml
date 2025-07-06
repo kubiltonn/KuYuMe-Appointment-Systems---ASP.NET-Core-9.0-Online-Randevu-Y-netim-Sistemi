@@ -1,0 +1,112 @@
+@model IEnumerable<AppointmentSystem.Models.Notification>
+
+<div class="dropdown">
+    <button class="btn btn-link position-relative" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-bell"></i>
+        @if (Model.Any(n => !n.IsRead))
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                @Model.Count(n => !n.IsRead)
+            </span>
+        }
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown" style="width: 300px;">
+        @if (!Model.Any())
+        {
+            <li><div class="dropdown-item text-center">Bildirim bulunmuyor</div></li>
+        }
+        else
+        {
+            foreach (var notification in Model.OrderByDescending(n => n.CreatedAt))
+            {
+                <li>
+                    <div class="dropdown-item @(!notification.IsRead ? "bg-light" : "") notification-item" data-notification-id="@notification.Id">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1 text-truncate">@notification.Title</h6>
+                                <p class="mb-1 text-wrap">@notification.Message</p>
+                                <small class="text-muted d-block">@notification.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
+                            </div>
+                            @if (!notification.IsRead)
+                            {
+                                <button type="button" class="btn btn-sm btn-link text-muted ms-2 mark-as-read" data-notification-id="@notification.Id">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-center" asp-controller="Notification" asp-action="Index">Tüm Bildirimleri Gör</a></li>
+        }
+    </ul>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const notificationItems = document.querySelectorAll('.notification-item');
+        const markAsReadButtons = document.querySelectorAll('.mark-as-read');
+
+        function updateNotificationCount() {
+            fetch('/Notification/GetUnreadCount')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.querySelector('#notificationsDropdown .badge');
+                    if (data.count > 0) {
+                        if (!badge) {
+                            const newBadge = document.createElement('span');
+                            newBadge.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger';
+                            document.querySelector('#notificationsDropdown').appendChild(newBadge);
+                        }
+                        badge.textContent = data.count;
+                    } else if (badge) {
+                        badge.remove();
+                    }
+                });
+        }
+
+        function markAsRead(notificationId) {
+            fetch('/Notification/MarkAsRead', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: `id=${notificationId}`
+            })
+            .then(response => {
+                if (response.ok) {
+                    const notificationItem = document.querySelector(`.notification-item[data-notification-id="${notificationId}"]`);
+                    if (notificationItem) {
+                        notificationItem.classList.remove('bg-light');
+                        const markAsReadButton = notificationItem.querySelector('.mark-as-read');
+                        if (markAsReadButton) {
+                            markAsReadButton.remove();
+                        }
+                    }
+                    updateNotificationCount();
+                }
+            });
+        }
+
+        notificationItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (!e.target.closest('.mark-as-read')) {
+                    const notificationId = this.dataset.notificationId;
+                    if (!this.classList.contains('bg-light')) {
+                        markAsRead(notificationId);
+                    }
+                }
+            });
+        });
+
+        markAsReadButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const notificationId = this.dataset.notificationId;
+                markAsRead(notificationId);
+            });
+        });
+    });
+</script> 

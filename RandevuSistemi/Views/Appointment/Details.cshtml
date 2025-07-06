@@ -1,0 +1,59 @@
+@model RandevuSistemi.Models.Appointment
+
+@{
+    ViewData["Title"] = "Randevu Detayları";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">@ViewData["Title"]</h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Randevu Türü</dt>
+                        <dd class="col-sm-8">@Model.AppointmentType?.Name</dd>
+
+                        <dt class="col-sm-4">Hizmet Türü</dt>
+                        <dd class="col-sm-8">@Model.ServiceType?.Name</dd>
+
+                        @if (Model.SubServiceType != null)
+                        {
+                            <dt class="col-sm-4">Alt Hizmet Türü</dt>
+                            <dd class="col-sm-8">@Model.SubServiceType.Name</dd>
+                        }
+
+                        <dt class="col-sm-4">Çalışan</dt>
+                        <dd class="col-sm-8">@Model.Employee?.Name</dd>
+
+                        <dt class="col-sm-4">Randevu Tarihi</dt>
+                        <dd class="col-sm-8">@Model.AppointmentDate.ToShortDateString()</dd>
+
+                        <dt class="col-sm-4">Randevu Saati</dt>
+                        <dd class="col-sm-8">@Model.AppointmentTime.ToString(@"hh\:mm")</dd>
+
+                        <dt class="col-sm-4">Durum</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge @(Model.Status == "Onaylandı" ? "bg-success" : 
+                                              Model.Status == "Beklemede" ? "bg-warning" : 
+                                              Model.Status == "İptal Edildi" ? "bg-danger" : "bg-secondary")">
+                                @Model.Status
+                            </span>
+                        </dd>
+
+                        @if (!string.IsNullOrEmpty(Model.Description))
+                        {
+                            <dt class="col-sm-4">Açıklama</dt>
+                            <dd class="col-sm-8">@Model.Description</dd>
+                        }
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

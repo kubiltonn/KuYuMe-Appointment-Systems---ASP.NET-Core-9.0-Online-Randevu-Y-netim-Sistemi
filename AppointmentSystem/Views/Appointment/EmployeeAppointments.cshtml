@@ -1,0 +1,289 @@
+@model IEnumerable<AppointmentSystem.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Randevularım";
+}
+
+<style>
+    .appointment-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    .appointment-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .appointment-header {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .appointment-body {
+        padding: 20px;
+    }
+
+    .status-badge {
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    .btn-group {
+        gap: 10px;
+    }
+
+    .action-btn {
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .customer-info {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .service-info {
+        border-left: 4px solid #3498db;
+        padding-left: 15px;
+        margin-bottom: 15px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #bdc3c7;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-calendar-alt me-2"></i>Randevularım</h2>
+        <div class="btn-group">
+            <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse">
+                <i class="fas fa-filter me-2"></i>Filtrele
+            </button>
+        </div>
+    </div>
+
+    <div class="collapse mb-4" id="filterCollapse">
+        <div class="card card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="form-label">Durum</label>
+                    <select class="form-select" id="statusFilter">
+                        <option value="">Tümü</option>
+                        <option value="Pending">Beklemede</option>
+                        <option value="Confirmed">Onaylandı</option>
+                        <option value="Cancelled">İptal Edildi</option>
+                        <option value="Completed">Tamamlandı</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Tarih Aralığı</label>
+                    <input type="date" class="form-control" id="dateFilter">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Hizmet</label>
+                    <select class="form-select" id="serviceFilter">
+                        <option value="">Tümü</option>
+                        <option value="Hairdressing">Kuaför</option>
+                        <option value="Medical">Sağlık</option>
+                        <option value="Consulting">Danışmanlık</option>
+                        <option value="CarMaintenance">Araç Bakım</option>
+                        <option value="WebServices">Web Hizmetleri</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <h3>Henüz Randevu Yok</h3>
+            <p class="text-muted">Size atanmış herhangi bir randevu bulunmamaktadır.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-4 appointment-item" 
+                     data-status="@item.Status"
+                     data-date="@item.AppointmentDate.ToString("yyyy-MM-dd")"
+                     data-service="@item.ServiceType">
+                    <div class="appointment-card">
+                        <div class="appointment-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">@item.AppointmentDate.ToString("dd MMMM yyyy")</h5>
+                                <span class="status-badge @(item.Status switch {
+                                    AppointmentStatus.Pending => "bg-warning",
+                                    AppointmentStatus.Confirmed => "bg-success",
+                                    AppointmentStatus.Cancelled => "bg-danger",
+                                    AppointmentStatus.Completed => "bg-info",
+                                    _ => "bg-secondary"
+                                })">
+                                    @item.Status
+                                </span>
+                            </div>
+                        </div>
+                        <div class="appointment-body">
+                            <div class="customer-info">
+                                <h6 class="mb-2"><i class="fas fa-user me-2"></i>Müşteri Bilgileri</h6>
+                                <p class="mb-1"><strong>Ad Soyad:</strong> @item.CustomerName</p>
+                                <p class="mb-1"><strong>Telefon:</strong> @item.PhoneNumber</p>
+                                <p class="mb-0"><strong>Bölge:</strong> @item.Region</p>
+                            </div>
+
+                            <div class="service-info">
+                                <h6 class="mb-2"><i class="fas fa-briefcase me-2"></i>Hizmet Bilgileri</h6>
+                                <p class="mb-1"><strong>Hizmet:</strong> @item.ServiceType</p>
+                                <p class="mb-0"><strong>Saat:</strong> @item.AppointmentDate.ToString("HH:mm")</p>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(item.Description))
+                            {
+                                <div class="mb-3">
+                                    <h6 class="mb-2"><i class="fas fa-comment me-2"></i>Notlar</h6>
+                                    <p class="mb-0">@item.Description</p>
+                                </div>
+                            }
+
+                            <div class="btn-group w-100">
+                                <a asp-action="EditAppointment" asp-route-id="@item.Id" class="btn btn-primary action-btn">
+                                    <i class="fas fa-edit me-2"></i>Düzenle
+                                </a>
+                                <div class="dropdown">
+                                    <button class="btn btn-success action-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-check me-2"></i>Durum
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <form asp-action="UpdateAppointmentStatus" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="status" value="@AppointmentStatus.Confirmed" />
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="fas fa-check-circle me-2"></i>Onayla
+                                                </button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form asp-action="UpdateAppointmentStatus" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="status" value="@AppointmentStatus.Cancelled" />
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="fas fa-times-circle me-2"></i>İptal Et
+                                                </button>
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <form asp-action="UpdateAppointmentStatus" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="status" value="@AppointmentStatus.Completed" />
+                                                <button type="submit" class="dropdown-item">
+                                                    <i class="fas fa-check-double me-2"></i>Tamamlandı
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Form gönderimlerini AJAX ile yap
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                var form = $(this);
+                $.post(form.attr('action'), form.serialize())
+                    .done(function () {
+                        location.reload();
+                    })
+                    .fail(function (error) {
+                        alert('Bir hata oluştu: ' + error.responseText);
+                    });
+            });
+
+            // Filtreleme işlevi
+            function filterAppointments() {
+                var status = $('#statusFilter').val();
+                var date = $('#dateFilter').val();
+                var service = $('#serviceFilter').val();
+
+                $('.appointment-item').each(function () {
+                    var item = $(this);
+                    var show = true;
+
+                    if (status && item.data('status') !== status) {
+                        show = false;
+                    }
+
+                    if (date && item.data('date') !== date) {
+                        show = false;
+                    }
+
+                    if (service && item.data('service') !== service) {
+                        show = false;
+                    }
+
+                    item.toggle(show);
+                });
+
+                // Eğer hiç randevu görünmüyorsa mesaj göster
+                if ($('.appointment-item:visible').length === 0) {
+                    if ($('.empty-state').length === 0) {
+                        $('.row').html(`
+                            <div class="col-12">
+                                <div class="empty-state">
+                                    <i class="fas fa-search"></i>
+                                    <h3>Sonuç Bulunamadı</h3>
+                                    <p class="text-muted">Seçtiğiniz kriterlere uygun randevu bulunmamaktadır.</p>
+                                </div>
+                            </div>
+                        `);
+                    }
+                } else {
+                    $('.empty-state').remove();
+                }
+            }
+
+            // Filtre değişikliklerini dinle
+            $('#statusFilter, #dateFilter, #serviceFilter').on('change', filterAppointments);
+        });
+    </script>
+} 

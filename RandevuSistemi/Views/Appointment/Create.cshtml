@@ -1,0 +1,116 @@
+@model RandevuSistemi.Models.Appointment
+
+@{
+    ViewData["Title"] = "Randevu Oluştur";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="AppointmentTypeId" class="control-label">Randevu Türü</label>
+                    <select asp-for="AppointmentTypeId" class="form-control" asp-items="ViewBag.AppointmentTypes">
+                        <option value="">Randevu Türü Seçiniz</option>
+                    </select>
+                    <span asp-validation-for="AppointmentTypeId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="ServiceTypeId" class="control-label">Hizmet Türü</label>
+                    <select asp-for="ServiceTypeId" class="form-control" asp-items="ViewBag.ServiceTypes">
+                        <option value="">Hizmet Türü Seçiniz</option>
+                    </select>
+                    <span asp-validation-for="ServiceTypeId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="SubServiceTypeId" class="control-label">Alt Hizmet Türü</label>
+                    <select asp-for="SubServiceTypeId" class="form-control">
+                        <option value="">Alt Hizmet Türü Seçiniz</option>
+                    </select>
+                    <span asp-validation-for="SubServiceTypeId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="EmployeeId" class="control-label">Çalışan</label>
+                    <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.Employees">
+                        <option value="">Çalışan Seçiniz</option>
+                    </select>
+                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="AppointmentDate" class="control-label">Randevu Tarihi</label>
+                    <input asp-for="AppointmentDate" class="form-control" type="date" />
+                    <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="AppointmentTime" class="control-label">Randevu Saati</label>
+                    <input asp-for="AppointmentTime" class="form-control" type="time" />
+                    <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="control-label">Açıklama</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div id="webSiteHizmetiOptions" class="service-options" style="display: none;">
+                    <div class="form-group mb-3">
+                        <label class="control-label">Programlama Dili</label>
+                        <select class="form-control" name="ServiceDetails" asp-items="ViewBag.ProgrammingLanguages">
+                            <option value="">Seçiniz...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Randevu Oluştur</button>
+                    <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Hizmet türü değiştiğinde alt hizmet türlerini güncelle
+            $('#ServiceTypeId').change(function () {
+                var mainServiceId = $(this).val();
+                var subServiceSelect = $('#SubServiceTypeId');
+                var webSiteOptions = $('#webSiteHizmetiOptions');
+                
+                // Alt hizmet türü dropdown'ını temizle
+                subServiceSelect.empty();
+                subServiceSelect.append($('<option></option>').val('').text('Alt Hizmet Türü Seçiniz'));
+
+                // Web sitesi hizmeti seçeneklerini gizle
+                webSiteOptions.hide();
+
+                if (mainServiceId) {
+                    // AJAX ile alt hizmet türlerini getir
+                    $.getJSON('/Appointment/GetSubServiceTypes', { mainServiceId: mainServiceId }, function (data) {
+                        $.each(data, function (index, item) {
+                            subServiceSelect.append($('<option></option>').val(item.id).text(item.name));
+                        });
+
+                        // Eğer seçilen hizmet "Web Site Hizmeti" ise, programlama dillerini göster
+                        if (data.some(item => item.name === "Web Site Hizmeti")) {
+                            webSiteOptions.show();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+} 

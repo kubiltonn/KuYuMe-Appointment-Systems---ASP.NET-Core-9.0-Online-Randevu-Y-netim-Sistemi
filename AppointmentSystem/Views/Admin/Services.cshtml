@@ -1,0 +1,171 @@
+@model IEnumerable<AppointmentSystem.Models.Service>
+@{
+    ViewData["Title"] = "Hizmetler";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Hizmetler</h2>
+        <div>
+            <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addMainServiceModal">
+                <i class="fas fa-plus"></i> Ana Hizmet Ekle
+            </button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSubServiceModal">
+                <i class="fas fa-plus"></i> Alt Hizmet Ekle
+            </button>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Hizmet Adı</th>
+                            <th>Açıklama</th>
+                            <th>Durum</th>
+                            <th>Alt Hizmetler</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var service in Model.Where(s => s.ParentServiceId == null))
+                        {
+                            <tr class="table-primary">
+                                <td>
+                                    <i class="fas fa-folder me-2"></i>
+                                    @service.Name
+                                </td>
+                                <td>@service.Description</td>
+                                <td>
+                                    <span class="badge bg-@(service.IsActive ? "success" : "danger")">
+                                        @(service.IsActive ? "Aktif" : "Pasif")
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#subServices-@service.Id">
+                                        <i class="fas fa-list"></i> Alt Hizmetleri Göster
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" onclick="editService(@service.Id)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteService(@service.Id)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="collapse" id="subServices-@service.Id">
+                                <td colspan="5">
+                                    <ul class="list-group">
+                                        @if (service.SubServices != null && service.SubServices.Any())
+                                        {
+                                            foreach (var subService in service.SubServices)
+                                            {
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <span><i class="fas fa-arrow-right me-2"></i>@subService.Name - @subService.Description</span>
+                                                    <span class="badge bg-@(subService.IsActive ? "success" : "danger")">
+                                                        @(subService.IsActive ? "Aktif" : "Pasif")
+                                                    </span>
+                                                </li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li class="list-group-item text-muted">Alt hizmet yok.</li>
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ana Hizmet Ekleme Modal -->
+<div class="modal fade" id="addMainServiceModal" tabindex="-1" aria-labelledby="addMainServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMainServiceModalLabel">Yeni Ana Hizmet Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="AddService" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Hizmet Adı</label>
+                        <input type="text" class="form-control" id="Name" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Description" class="form-label">Açıklama</label>
+                        <textarea class="form-control" id="Description" name="Description" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Alt Hizmet Ekleme Modal -->
+<div class="modal fade" id="addSubServiceModal" tabindex="-1" aria-labelledby="addSubServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSubServiceModalLabel">Yeni Alt Hizmet Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="AddSubService" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="ParentServiceId" class="form-label">Ana Hizmet</label>
+                        <select class="form-control" id="ParentServiceId" name="ParentServiceId" required>
+                            <option value="">Ana Hizmet Seçin</option>
+                            @foreach (var service in Model.Where(s => s.ParentServiceId == null))
+                            {
+                                <option value="@service.Id">@service.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Hizmet Adı</label>
+                        <input type="text" class="form-control" id="Name" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Description" class="form-label">Açıklama</label>
+                        <textarea class="form-control" id="Description" name="Description" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function editService(id) {
+            // Düzenleme işlemi için gerekli kodlar
+        }
+
+        function deleteService(id) {
+            if (confirm('Bu hizmeti silmek istediğinizden emin misiniz?')) {
+                $.post('@Url.Action("DeleteService")', { id: id }, function() {
+                    location.reload();
+                });
+            }
+        }
+    </script>
+} 

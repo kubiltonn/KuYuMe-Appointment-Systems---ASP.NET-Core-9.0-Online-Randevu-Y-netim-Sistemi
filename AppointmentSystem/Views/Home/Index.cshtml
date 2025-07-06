@@ -1,0 +1,414 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<style>
+    body {
+        background: url('/images/appointment-bg.jpg.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+    .welcome-section {
+        background: linear-gradient(135deg, rgba(52,152,219,0.85), rgba(44,62,80,0.85));
+        color: white;
+        padding: 80px 0;
+        margin-bottom: 40px;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        text-align: center;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, #3498db, #2980b9);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #3498db;
+        background: rgba(52, 152, 219, 0.1);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+    }
+
+    .feature-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .feature-actions {
+        margin-top: auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .card-title {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .card-text {
+        color: #7f8c8d;
+        margin-bottom: 25px;
+        text-align: center;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-custom {
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .btn-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        z-index: -1;
+    }
+
+    .btn-custom:hover::before {
+        width: 100%;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        border: none;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        border: none;
+    }
+
+    .quick-actions {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 30px;
+        margin-top: 40px;
+    }
+
+    .stats-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+
+    .stats-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #3498db;
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 1s ease-in;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Yeni eklenen stiller */
+    .container {
+        max-width: 100%;
+        padding: 0 30px;
+    }
+
+    .row {
+        margin: 0 -15px;
+    }
+
+    .col-md-6 {
+        padding: 0 15px;
+    }
+
+    .stats-section {
+        margin-top: 40px;
+    }
+
+    .stats-card {
+        height: 100%;
+    }
+</style>
+
+<div class="welcome-section">
+    <div class="container text-center">
+        <h1 class="display-4">KuYuMe Randevu Sistemine Hoş Geldiniz</h1>
+        <p class="lead">Randevularınızı kolayca yönetin -- Hızlı randevu almanın adresi</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        @if (User.IsInRole("Employee"))
+        {
+            <div class="col-md-12 mb-4">
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3 class="card-title">Randevularım</h3>
+                        <p class="card-text">Size atanan randevuları görüntüleyin, onaylayın ve yönetin. Randevu durumlarını güncelleyin ve müşterilerinizle iletişimde kalın.</p>
+                    </div>
+                    <div class="feature-actions">
+                        <a href="/Appointment/EmployeeAppointments" class="btn btn-custom btn-primary">
+                            <i class="fas fa-calendar-alt me-2"></i>Randevuları Görüntüle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
+        {
+            <div class="col-md-12 mb-4">
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3 class="card-title">Randevularım</h3>
+                        <p class="card-text">Tüm randevularınızı tek bir yerden görüntüleyin ve yönetin. Geçmiş ve gelecek randevularınızı takip edin.</p>
+                    </div>
+                    <div class="feature-actions">
+                        <a href="/Appointment" class="btn btn-custom btn-primary">
+                            <i class="fas fa-calendar-alt me-2"></i>Randevuları Görüntüle
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-4">
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <h3 class="card-title">Yeni Randevu</h3>
+                        <p class="card-text">Hızlı ve kolay bir şekilde yeni randevu oluşturun. Size en uygun zamanı seçin ve randevunuzu hemen planlayın.</p>
+                    </div>
+                    <div class="feature-actions">
+                        <a href="/Appointment/Create" class="btn btn-custom btn-success">
+                            <i class="fas fa-plus me-2"></i>Randevu Oluştur
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-md-12 mb-4">
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <h3 class="card-title">Hakkımızda</h3>
+                        <p class="card-text">KuYuMe Appointment Systems, bireylerin ve işletmelerin randevu süreçlerini dijital ortamda kolayca yönetebilmesi amacıyla geliştirilen kullanıcı dostu bir web uygulamasıdır. Projemiz, hızla dijitalleşen dünyada zaman yönetimini daha etkili ve erişilebilir hale getirmeyi hedeflemektedir.
+
+KuYuMe, Biruni Üniversitesi Bilgisayar Mühendisliği öğrencileri Kubilay Gül, Yunus Muslukçu ve Mertcan Köprüvalı tarafından tasarlanmış ve geliştirilmiştir. Ekibimizin isminin baş harflerinden oluşan "KuYuMe", sadece bir uygulama değil, aynı zamanda ekip ruhumuzun ve teknik vizyonumuzun bir yansımasıdır.
+
+Neyi Amaçlıyoruz?
+Kullanıcıların randevu oluşturma ve takip süreçlerini hızlandırmak,
+
+Çalışanlar için esnek ve yönetilebilir bir randevu takvimi sunmak,
+
+İşletmelerin hizmet ve çalışanlarını kolayca yönetebilmesini sağlamak,
+
+</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="card-title">7/24 Hizmet</h3>
+                        <p class="card-text">Sistemimiz 7/24 aktif olarak çalışmaktadır. İstediğiniz zaman randevu alabilir, düzenleyebilir veya iptal edebilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="card-title">Mobil Uyumlu</h3>
+                        <p class="card-text">Tüm cihazlardan kolayca erişebilirsiniz. Mobil telefon, tablet veya bilgisayarınızdan randevularınızı yönetin.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="card-title">Güvenli Sistem</h3>
+                        <p class="card-text">Verileriniz güvende. En son güvenlik teknolojileri ile bilgileriniz korunmaktadır.</p>
+                    </div>
+                </div>
+            </div>
+
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="col-md-12 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-content">
+                            <div class="feature-icon">
+                                <i class="fas fa-sign-in-alt"></i>
+                            </div>
+                            <h3 class="card-title">Hemen Başlayın</h3>
+                            <p class="card-text">Sistemi kullanmaya başlamak için hemen giriş yapın veya kayıt olun. Size özel randevu yönetimi deneyimini keşfedin.</p>
+                            <div class="feature-actions">
+                                <a href="/Account/Login" class="btn btn-custom btn-primary mx-2">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Giriş Yap
+                                </a>
+                                <a href="/Account/Register" class="btn btn-custom btn-success mx-2">
+                                    <i class="fas fa-user-plus me-2"></i>Kayıt Ol
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="quick-actions animate-fade-in" style="animation-delay: 0.8s;">
+            <h2 class="text-center mb-4">Hızlı İşlemler</h2>
+            <div class="d-flex justify-content-center flex-wrap">
+                @if (User.IsInRole("Admin"))
+                {
+                    <a href="/Admin/Appointments" class="btn btn-custom btn-primary mx-2">
+                        <i class="fas fa-calendar-alt me-2"></i>Randevuları Düzenle
+                    </a>
+                    <a href="/Admin/Employees" class="btn btn-custom btn-success mx-2">
+                        <i class="fas fa-user-plus me-2"></i>Çalışan Ekle
+                    </a>
+                    <a href="/Admin/Services" class="btn btn-custom btn-info mx-2">
+                        <i class="fas fa-plus-circle me-2"></i>Hizmet Ekle
+                    </a>
+                }
+                else
+                {
+                    <a href="/Account/Profile" class="btn btn-custom btn-outline-info mx-2">
+                        <i class="fas fa-user me-2"></i>Profilim
+                    </a>
+                }
+            </div>
+        </div>
+
+        @if (!User.IsInRole("Admin"))
+        {
+            <div class="row mt-4 stats-section">
+                <div class="col-md-4 animate-fade-in" style="animation-delay: 1s;">
+                    <div class="stats-card">
+                        <h4>Aktif Randevular</h4>
+                        <div class="stats-number">3</div>
+                        <p class="text-muted mb-0">Yaklaşan randevularınız</p>
+                    </div>
+                </div>
+                <div class="col-md-4 animate-fade-in" style="animation-delay: 1.2s;">
+                    <div class="stats-card">
+                        <h4>Toplam Randevu</h4>
+                        <div class="stats-number">12</div>
+                        <p class="text-muted mb-0">Geçmiş randevularınız</p>
+                    </div>
+                </div>
+                <div class="col-md-4 animate-fade-in" style="animation-delay: 1.4s;">
+                    <div class="stats-card">
+                        <h4>Başarı Oranı</h4>
+                        <div class="stats-number">%95</div>
+                        <p class="text-muted mb-0">Tamamlanan randevular</p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Sidebar toggle işlevi
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('content').classList.toggle('active');
+        });
+
+        // Animasyon için Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.animate-fade-in').forEach((el) => observer.observe(el));
+    </script>
+}

@@ -1,0 +1,112 @@
+@model AppointmentSystem.Models.AppointmentCreateViewModel
+
+@{
+    ViewData["Title"] = "Yeni Randevu";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Yeni Randevu Oluştur</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-group mb-3">
+                            <label class="control-label">Ana Hizmet</label>
+                            <select id="MainServiceId" class="form-select">
+                                <option value="">Ana Hizmet Seçin</option>
+                                @foreach (var service in ViewBag.MainServices)
+                                {
+                                    <option value="@service.Value">@service.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="ServiceId" class="control-label">Alt Hizmet</label>
+                            <select asp-for="ServiceId" class="form-select">
+                                <option value="">Önce Ana Hizmet Seçin</option>
+                            </select>
+                            <span asp-validation-for="ServiceId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="EmployeeId" class="control-label">Personel</label>
+                            <select asp-for="EmployeeId" class="form-select">
+                                <option value="">Önce Hizmet Seçin</option>
+                            </select>
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="AppointmentDate" class="control-label">Randevu Tarihi</label>
+                            <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="control-label">Açıklama</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Randevularıma Dön
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Randevu Oluştur
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            // Ana hizmet seçildiğinde alt hizmetleri getir
+            $('#MainServiceId').change(function () {
+                var mainServiceId = $(this).val();
+                var serviceSelect = $('#ServiceId');
+                var employeeSelect = $('#EmployeeId');
+                
+                // Alt hizmet ve personel seçimlerini sıfırla
+                serviceSelect.empty().append('<option value="">Alt Hizmet Seçin</option>');
+                employeeSelect.empty().append('<option value="">Önce Hizmet Seçin</option>');
+
+                if (mainServiceId) {
+                    $.get('/Appointment/GetSubServices', { mainServiceId: mainServiceId }, function (data) {
+                        $.each(data, function (index, item) {
+                            serviceSelect.append($('<option></option>').val(item.value).text(item.text));
+                        });
+                    });
+                }
+            });
+
+            // Alt hizmet seçildiğinde personel listesini güncelle
+            $('#ServiceId').change(function () {
+                var serviceId = $(this).val();
+                var employeeSelect = $('#EmployeeId');
+                
+                employeeSelect.empty().append('<option value="">Personel Seçin</option>');
+
+                if (serviceId) {
+                    $.get('/Appointment/GetEmployeesByService', { serviceId: serviceId }, function (data) {
+                        $.each(data, function (index, item) {
+                            employeeSelect.append($('<option></option>').val(item.value).text(item.text));
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+} 

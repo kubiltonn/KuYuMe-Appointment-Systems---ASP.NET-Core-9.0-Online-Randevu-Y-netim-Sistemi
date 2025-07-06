@@ -1,0 +1,67 @@
+@model AppointmentSystem.Models.Appointment
+
+@{
+    ViewData["Title"] = "Randevu Düzenle";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Randevu Düzenle</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CustomerId" />
+                        <input type="hidden" asp-for="CreatedAt" />
+                        <input type="hidden" asp-for="Status" />
+
+                        <div class="form-group mb-3">
+                            <label asp-for="EmployeeId" class="control-label">Personel</label>
+                            <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.Employees">
+                                <option value="">Personel Seçiniz</option>
+                            </select>
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="ServiceId" class="control-label">Hizmet</label>
+                            <select asp-for="ServiceId" class="form-control" asp-items="ViewBag.Services">
+                                <option value="">Hizmet Seçiniz</option>
+                            </select>
+                            <span asp-validation-for="ServiceId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="AppointmentDate" class="control-label">Randevu Tarihi</label>
+                            <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="control-label">Açıklama</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Kaydet
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Randevularıma Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

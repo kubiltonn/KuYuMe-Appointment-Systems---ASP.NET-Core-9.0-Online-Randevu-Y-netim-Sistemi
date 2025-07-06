@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = "Ayarlar";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <h2 class="mb-4">Ayarlar</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Sistem Ayarları</h6>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="UpdateSettings">
+                        <div class="mb-3">
+                            <label class="form-label">Site Başlığı</label>
+                            <input type="text" class="form-control" name="SiteTitle" value="@ViewBag.SiteTitle">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">E-posta Sunucusu</label>
+                            <input type="text" class="form-control" name="SmtpServer" value="@ViewBag.SmtpServer">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">E-posta Port</label>
+                            <input type="number" class="form-control" name="SmtpPort" value="@ViewBag.SmtpPort">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">E-posta Kullanıcı Adı</label>
+                            <input type="text" class="form-control" name="SmtpUsername" value="@ViewBag.SmtpUsername">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">E-posta Şifresi</label>
+                            <input type="password" class="form-control" name="SmtpPassword" value="@ViewBag.SmtpPassword">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Randevu Ayarları</h6>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="UpdateAppointmentSettings">
+                        <div class="mb-3">
+                            <label class="form-label">Minimum Randevu Süresi (Dakika)</label>
+                            <input type="number" class="form-control" name="MinAppointmentDuration" value="@ViewBag.MinAppointmentDuration">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Maksimum Randevu Süresi (Dakika)</label>
+                            <input type="number" class="form-control" name="MaxAppointmentDuration" value="@ViewBag.MaxAppointmentDuration">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Randevu Onay Süresi (Saat)</label>
+                            <input type="number" class="form-control" name="AppointmentConfirmationHours" value="@ViewBag.AppointmentConfirmationHours">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">İptal Edilebilme Süresi (Saat)</label>
+                            <input type="number" class="form-control" name="CancellationHours" value="@ViewBag.CancellationHours">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

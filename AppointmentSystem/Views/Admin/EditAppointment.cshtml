@@ -1,0 +1,94 @@
+@model AppointmentSystem.Models.Appointment
+@{
+    ViewData["Title"] = "Randevu Düzenle";
+    Layout = "_AdminLayout";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Randevu Düzenle</h4>
+                </div>
+                <div class="card-body">
+                    @if (TempData["FormErrors"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @Html.Raw(TempData["FormErrors"])
+                        </div>
+                    }
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <form asp-action="EditAppointment" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CreatedAt" />
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group mb-3">
+                            <label asp-for="CustomerId" class="control-label">Müşteri</label>
+                            <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.Customers" required>
+                                <option value="">Müşteri Seçiniz</option>
+                            </select>
+                            <span asp-validation-for="CustomerId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="EmployeeId" class="control-label">Personel</label>
+                            <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.Employees" required>
+                                <option value="">Personel Seçiniz</option>
+                            </select>
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="ServiceId" class="control-label">Hizmet</label>
+                            <select asp-for="ServiceId" class="form-control" asp-items="ViewBag.Services" required>
+                                <option value="">Hizmet Seçiniz</option>
+                            </select>
+                            <span asp-validation-for="ServiceId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="AppointmentDate" class="control-label">Randevu Tarihi</label>
+                            <input asp-for="AppointmentDate" class="form-control" type="datetime-local" required />
+                            <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Status" class="control-label">Durum</label>
+                            <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<AppointmentStatus>()" required>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Description" class="control-label">Açıklama</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Kaydet
+                            </button>
+                            <a asp-action="Appointments" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Listeye Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

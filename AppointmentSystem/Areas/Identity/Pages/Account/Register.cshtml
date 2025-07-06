@@ -1,0 +1,152 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Kayıt Ol</h4>
+                </div>
+                <div class="card-body">
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Input.Name" class="control-label">Ad</label>
+                                    <input asp-for="Input.Name" class="form-control" autocomplete="name" aria-required="true" required />
+                                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Input.Surname" class="control-label">Soyad</label>
+                                    <input asp-for="Input.Surname" class="form-control" autocomplete="surname" aria-required="true" required />
+                                    <span asp-validation-for="Input.Surname" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Input.Email" class="control-label">Email</label>
+                                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" required />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Input.PhoneNumber" class="control-label">Telefon Numarası</label>
+                                    <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="tel" required />
+                                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Input.Password" class="control-label">Şifre</label>
+                                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" required />
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Input.ConfirmPassword" class="control-label">Şifre Tekrar</label>
+                                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" required />
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Input.Region" class="control-label">Bölge</label>
+                                    <input asp-for="Input.Region" class="form-control" required />
+                                    <span asp-validation-for="Input.Region" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Input.BirthDate" class="control-label">Doğum Tarihi</label>
+                                    <input asp-for="Input.BirthDate" class="form-control" type="date" required />
+                                    <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <div class="form-check">
+                                <input asp-for="Input.IsEmployee" class="form-check-input" type="checkbox" id="isEmployeeCheck" />
+                                <label asp-for="Input.IsEmployee" class="form-check-label">Çalışan olarak kayıt ol</label>
+                            </div>
+                        </div>
+
+                        <div id="employeeFields" class="card mb-3" style="display: none;">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0">Çalışan Bilgileri</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label asp-for="Input.Specialization" class="control-label">Uzmanlık Alanı</label>
+                                    <input asp-for="Input.Specialization" class="form-control" />
+                                    <span asp-validation-for="Input.Specialization" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-page="./Login" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Giriş Yap
+                            </a>
+                            <button id="registerSubmit" type="submit" class="btn btn-primary">
+                                <i class="fas fa-user-plus"></i> Kayıt Ol
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Sayfa yüklendiğinde checkbox durumunu kontrol et
+            if ($('#isEmployeeCheck').is(':checked')) {
+                $('#employeeFields').show();
+                $('#Input_Specialization').prop('required', true);
+            }
+
+            // Checkbox değiştiğinde
+            $('#isEmployeeCheck').change(function() {
+                if (this.checked) {
+                    $('#employeeFields').slideDown();
+                    $('#Input_Specialization').prop('required', true);
+                } else {
+                    $('#employeeFields').slideUp();
+                    $('#Input_Specialization').prop('required', false);
+                }
+            });
+
+            // Form gönderilmeden önce kontrol
+            $('#registerForm').submit(function(e) {
+                if ($('#isEmployeeCheck').is(':checked') && !$('#Input_Specialization').val()) {
+                    e.preventDefault();
+                    alert('Lütfen uzmanlık alanını doldurunuz.');
+                    $('#Input_Specialization').focus();
+                }
+            });
+        });
+    </script>
+} 

@@ -1,0 +1,93 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\kubil\\Desktop\\Web Proje dokumantasyon\\proje\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7DA1E84B-FC44-89A2-D396-BAC632D7CA5D}|AppointmentSystem\\AppointmentSystem.csproj|c:\\users\\kubil\\desktop\\web proje dokumantasyon\\proje\\appointmentsystem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7DA1E84B-FC44-89A2-D396-BAC632D7CA5D}|AppointmentSystem\\AppointmentSystem.csproj|solutionrelative:appointmentsystem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7DA1E84B-FC44-89A2-D396-BAC632D7CA5D}|AppointmentSystem\\AppointmentSystem.csproj|c:\\users\\kubil\\desktop\\web proje dokumantasyon\\proje\\appointmentsystem\\migrations\\20250514143814_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7DA1E84B-FC44-89A2-D396-BAC632D7CA5D}|AppointmentSystem\\AppointmentSystem.csproj|solutionrelative:appointmentsystem\\migrations\\20250514143814_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7DA1E84B-FC44-89A2-D396-BAC632D7CA5D}|AppointmentSystem\\AppointmentSystem.csproj|c:\\users\\kubil\\desktop\\web proje dokumantasyon\\proje\\appointmentsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7DA1E84B-FC44-89A2-D396-BAC632D7CA5D}|AppointmentSystem\\AppointmentSystem.csproj|solutionrelative:appointmentsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7DA1E84B-FC44-89A2-D396-BAC632D7CA5D}|AppointmentSystem\\AppointmentSystem.csproj|c:\\users\\kubil\\desktop\\web proje dokumantasyon\\proje\\appointmentsystem\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7DA1E84B-FC44-89A2-D396-BAC632D7CA5D}|AppointmentSystem\\AppointmentSystem.csproj|solutionrelative:appointmentsystem\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\kubil\\Desktop\\Web Proje dokumantasyon\\proje\\AppointmentSystem\\Program.cs",
+              "RelativeDocumentMoniker": "AppointmentSystem\\Program.cs",
+              "ToolTip": "C:\\Users\\kubil\\Desktop\\Web Proje dokumantasyon\\proje\\AppointmentSystem\\Program.cs",
+              "RelativeToolTip": "AppointmentSystem\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T07:14:15.766Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\kubil\\Desktop\\Web Proje dokumantasyon\\proje\\AppointmentSystem\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "AppointmentSystem\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\kubil\\Desktop\\Web Proje dokumantasyon\\proje\\AppointmentSystem\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "AppointmentSystem\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T07:14:00.093Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\kubil\\Desktop\\Web Proje dokumantasyon\\proje\\AppointmentSystem\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "AppointmentSystem\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\kubil\\Desktop\\Web Proje dokumantasyon\\proje\\AppointmentSystem\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "AppointmentSystem\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAMAwwEQAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T07:00:05.495Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "20250514143814_InitialCreate.cs",
+              "DocumentMoniker": "C:\\Users\\kubil\\Desktop\\Web Proje dokumantasyon\\proje\\AppointmentSystem\\Migrations\\20250514143814_InitialCreate.cs",
+              "RelativeDocumentMoniker": "AppointmentSystem\\Migrations\\20250514143814_InitialCreate.cs",
+              "ToolTip": "C:\\Users\\kubil\\Desktop\\Web Proje dokumantasyon\\proje\\AppointmentSystem\\Migrations\\20250514143814_InitialCreate.cs",
+              "RelativeToolTip": "AppointmentSystem\\Migrations\\20250514143814_InitialCreate.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAIApwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T08:23:55.746Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
